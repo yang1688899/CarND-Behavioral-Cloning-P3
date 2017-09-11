@@ -32,7 +32,7 @@ for line in lines:
 #    left_path = line[1]
 #    right_path = line[2]
 #    current_center_path = get_current_path(center_path)
-    current_center_paths = [get_current_path(path) for path in line[:2]]
+    current_center_paths = [get_current_path(path) for path in line[:3]]
     img_samples = [cv2.imread(path) for path in current_center_paths]
     
     measurement = float(line[3])
@@ -43,6 +43,8 @@ for line in lines:
     
     imgs.extend(img_samples)
     measurements.extend(measurement_samples)
+print(len(imgs))
+print(len(measurements))
     
 for i in range(len(imgs)):
     image_flipped = np.fliplr(imgs[i])
@@ -50,7 +52,8 @@ for i in range(len(imgs)):
     imgs.append(image_flipped)
     measurements.append(measurement_flipped)
     
-    
+print(len(imgs))
+print(len(measurements))
     
 X_train = np.array(imgs)
 y_train = np.array(measurements)
@@ -77,7 +80,7 @@ model.add(Activation('relu'))
 model.add(Dense(1))
 
 model.compile(optimizer='adam', loss='mse')
-model.fit(X_train,y_train,validation_split=0.2,shuffle=True,epochs=10)
+model.fit(X_train,y_train,validation_split=0.2,shuffle=True,epochs=5,batch_size=128)
 model.save('model.h5')
 exit()
     
