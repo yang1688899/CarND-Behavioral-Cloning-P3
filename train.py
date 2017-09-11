@@ -12,6 +12,7 @@ from keras.models import Sequential
 from keras.layers.core import Dense,Flatten,Activation,Lambda
 from keras.layers.convolutional import Conv2D
 from keras.layers.pooling import MaxPooling2D
+from keras.layers import Cropping2D
  
 def get_current_path(path):
     fileName = path.split('/')[-1]
@@ -28,10 +29,7 @@ with open('../data/driving_log.csv') as csvFile:
 imgs = []
 measurements = []
 for line in lines:
-#    center_path = line[0]
-#    left_path = line[1]
-#    right_path = line[2]
-#    current_center_path = get_current_path(center_path)
+
     current_center_paths = [get_current_path(path) for path in line[:3]]
     img_samples = [cv2.imread(path) for path in current_center_paths]
     
@@ -61,7 +59,8 @@ y_train = np.array(measurements)
 input_shape = X_train.shape[1:]
 model = Sequential()
 
-model.add(Lambda(lambda x: x/255. - 0.5, input_shape=input_shape))
+model.add(Cropping2D(cropping=((70,25), (0,0)), input_shape=input_shape))
+model.add(Lambda(lambda x: x/255. - 0.5))
 model.add(Conv2D(filters=6,kernel_size=(5,5)))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=2,strides=2))
