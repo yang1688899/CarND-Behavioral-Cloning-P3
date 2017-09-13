@@ -16,15 +16,16 @@ from keras.layers import Cropping2D
  
 def get_current_path(path):
     fileName = path.split('/')[-1]
-    currentPath = '../data/IMG/' + fileName
+    currentPath = '../my_data/IMG/' + fileName
     return currentPath
     
 lines = []
-with open('../data/driving_log.csv') as csvFile:
+with open('../my_data/driving_log.csv') as csvFile:
     reader = csv.reader(csvFile)
     next(reader)
     for line in reader:
         lines.append(line)
+        
     
 imgs = []
 measurements = []
