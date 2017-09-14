@@ -15,7 +15,7 @@ from keras.layers.pooling import MaxPooling2D
 from keras.layers import Cropping2D
  
 def get_current_path(path):
-    fileName = path.split('/')[-1]
+    fileName = path.split('\\')[-1]
     currentPath = '../my_data/IMG/' + fileName
     return currentPath
     
