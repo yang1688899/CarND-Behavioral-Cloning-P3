@@ -19,41 +19,37 @@ from sklearn.model_selection import train_test_split
 #define a generator
 def generator(samples, batch_size=32):
     samples_size = len(samples)
-    while 1:
+    while True:
         shuffle(samples)
-        for offset in (0,batch_size,samples_size):
+        for offset in range(0,samples_size,batch_size):
             batch_samples = samples[offset:offset+batch_size]
             
             imgs = []
             measurements = []
-            
+
+            for sample in batch_samples:
+                current_center_paths = [get_current_path(path) for path in sample[:3]]
+                img_samples = [cv2.imread(path) for path in current_center_paths]
+                
+                measurement = float(line[3])
+                correction = 0.2
+                measurement_left = measurement + correction
+                measurement_right = measurement - correction
+                measurement_samples = [measurement,measurement_left,measurement_right]
+                
+                imgs.extend(img_samples)
+                measurements.extend(measurement_samples)
         
-
-        for sample in batch_samples:
-            current_center_paths = [get_current_path(path) for path in sample[:3]]
-            img_samples = [cv2.imread(path) for path in current_center_paths]
-            
-            measurement = float(line[3])
-            correction = 0.2
-            measurement_left = measurement + correction
-            measurement_right = measurement - correction
-            measurement_samples = [measurement,measurement_left,measurement_right]
-            
-            imgs.extend(img_samples)
-            measurements.extend(measurement_samples)
-
-    
-        for i in range(len(imgs)):
-            image_flipped = np.fliplr(imgs[i])
-            measurement_flipped = -measurements[i]
-            imgs.append(image_flipped)
-            measurements.append(measurement_flipped)
+            for i in range(len(imgs)):
+                image_flipped = np.fliplr(imgs[i])
+                measurement_flipped = -measurements[i]
+                imgs.append(image_flipped)
+                measurements.append(measurement_flipped)
     
     
-        X_train = np.array(imgs)
-        y_train = np.array(measurements)
-        print(X_train.shape[1:])
-        yield X_train,y_train
+            X_train = np.array(imgs)
+            y_train = np.array(measurements)
+            yield X_train,y_train
  
 def get_current_path(path):
     fileName = path.split('\\')[-1]
@@ -69,9 +65,8 @@ with open('../my_data/driving_log.csv') as csvFile:
 #split the train and validate set        
 train_samples, validate_samples = train_test_split(lines,test_size=0.2)
 
-train_generator = generator(train_samples,batch_size=256)
-validate_generator = generator(validate_samples,batch_size=256)
-        
+train_generator = generator(train_samples,batch_size=64)
+validate_generator = generator(validate_samples,batch_size=64)       
 
 model = Sequential()
 
@@ -95,8 +90,8 @@ model.add(Activation('relu'))
 model.add(Dense(1))
 
 model.compile(optimizer='adam', loss='mse')
-model.fit_generator(train_generator,samples_per_epoch=len(train_samples)*6,validation_data=\
-          validate_generator,nb_val_samples=len(validate_samples)*6,nb_epoch=5)
+model.fit_generator(train_generator,steps_per_epoch=len(train_samples)/64,validation_data=\
+          validate_generator,nb_val_samples=len(validate_samples)/64,nb_epoch=5)
 model.save('model.h5')
 exit()
     
