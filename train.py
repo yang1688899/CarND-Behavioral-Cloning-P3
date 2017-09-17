@@ -52,21 +52,21 @@ def generator(samples, batch_size=32):
             yield X_train,y_train
  
 def get_current_path(path):
-    fileName = path.split('\\')[-1]
-    currentPath = '../my_data/IMG/' + fileName
+    fileName = path.split('/')[-1]
+    currentPath = '../data/IMG/' + fileName
     return currentPath
     
 lines = []
-with open('../my_data/driving_log.csv') as csvFile:
+with open('../data/driving_log.csv') as csvFile:
     reader = csv.reader(csvFile)
     next(reader)
     for line in reader:
         lines.append(line)
 #split the train and validate set        
 train_samples, validate_samples = train_test_split(lines,test_size=0.2)
-
-train_generator = generator(train_samples,batch_size=64)
-validate_generator = generator(validate_samples,batch_size=64)       
+batch_size = 128
+train_generator = generator(train_samples,batch_size=batch_size)
+validate_generator = generator(validate_samples,batch_size=batch_size)       
 
 model = Sequential()
 
@@ -90,8 +90,8 @@ model.add(Activation('relu'))
 model.add(Dense(1))
 
 model.compile(optimizer='adam', loss='mse')
-model.fit_generator(train_generator,steps_per_epoch=len(train_samples)/64,validation_data=\
-          validate_generator,nb_val_samples=len(validate_samples)/64,nb_epoch=5)
+model.fit_generator(train_generator,steps_per_epoch=len(train_samples)/batch_size,validation_data=\
+          validate_generator,nb_val_samples=len(validate_samples)/batch_size,nb_epoch=5)
 model.save('model.h5')
 exit()
     
