@@ -73,5 +73,5 @@ model = load_model('model.h5')
 
 model.compile(optimizer='adam', loss='mse')
 model.fit_generator(train_generator,steps_per_epoch=len(train_samples)/batch_size,validation_data=\
-          validate_generator,nb_val_samples=len(validate_samples)/batch_size,nb_epoch=10)
+          validate_generator,nb_val_samples=len(validate_samples)/batch_size,nb_epoch=25)
 model.save('model.h5')
