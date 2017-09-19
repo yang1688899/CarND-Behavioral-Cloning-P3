@@ -15,6 +15,7 @@ from keras.layers.pooling import MaxPooling2D
 from keras.layers import Cropping2D
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
+import random
 
 #define a generator
 def generator(samples, batch_size=32):
@@ -31,7 +32,7 @@ def generator(samples, batch_size=32):
                 current_center_paths = [get_current_path(path) for path in sample[:3]]
                 img_samples = [cv2.imread(path) for path in current_center_paths]
                 
-                measurement = float(line[3])
+                measurement = float(sample[3])
                 correction = 0.2
                 measurement_left = measurement + correction
                 measurement_right = measurement - correction
@@ -41,10 +42,11 @@ def generator(samples, batch_size=32):
                 measurements.extend(measurement_samples)
         
             for i in range(len(imgs)):
-                image_flipped = np.fliplr(imgs[i])
-                measurement_flipped = -measurements[i]
-                imgs.append(image_flipped)
-                measurements.append(measurement_flipped)
+                if round(random.random()):
+                    image_flipped = np.fliplr(imgs[i])
+                    measurement_flipped = -measurements[i]
+                    imgs.append(image_flipped)
+                    measurements.append(measurement_flipped)
     
     
             X_train = np.array(imgs)
@@ -65,7 +67,7 @@ with open('../data/driving_log.csv') as csvFile:
         lines.append(line)
 #split the train and validate set        
 train_samples, validate_samples = train_test_split(lines,test_size=0.2)
-batch_size = 5
+batch_size = 10
 train_generator = generator(train_samples,batch_size=batch_size)
 validate_generator = generator(validate_samples,batch_size=batch_size)       
 

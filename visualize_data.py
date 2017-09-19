@@ -21,7 +21,7 @@ with open('../data/driving_log.csv') as csvFile:
             if float(line[3])<lable:
                 static[lable]+=1
                 break
-                
+print (static)       
 x = [i for i in static.keys()]
 print(x)
 y = [i for i in static.values()]
