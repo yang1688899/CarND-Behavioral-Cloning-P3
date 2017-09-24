@@ -38,7 +38,7 @@ My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* writeup_report.md summarizing the results
 
 ####2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
@@ -54,23 +54,58 @@ The model.py file contains the code for training and saving the convolution neur
 
 ####1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+The model consisted 3 Convolution layers with depth of 6,16,32 and a 2x2 Max pooling layer after each convolution layers, and 3 fully connected layer:
+```
+model = Sequential()
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+model.add(Cropping2D(cropping=((70,25), (0,0)), input_shape=[160, 320, 3]))
+model.add(Lambda(lambda x: x/255. - 0.5))
+model.add(Conv2D(filters=6,kernel_size=(5,5)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=2,strides=2))
+
+model.add(Conv2D(filters=16,kernel_size=(5,5)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=2,strides=2))
+
+model.add(Dropout(0.5))
+
+model.add(Conv2D(filters=32,kernel_size=(3,3)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=2,strides=2))
+
+model.add(Flatten())
+model.add(Dense(120))
+model.add(Activation('relu'))
+
+model.add(Dropout(0.5))
+
+model.add(Dense(86))
+model.add(Activation('relu'))
+
+model.add(Dropout(0.5))
+
+model.add(Dense(10))
+model.add(Activation('relu'))
+
+model.add(Dropout(0.5))
+
+model.add(Dense(1))
+```
 
 ####2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+The model contains dropout layers in order to reduce overfitting . 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting. The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 ####3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually .
 
 ####4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road. 
 
 For details about how I created the training data, see the next section. 
 
@@ -91,6 +126,8 @@ Then I ...
 The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+
+First use a convolution neural network model similar to the LeNet architecture, just wanted to see how this architecture going to perform on such problem. After I split my image and steering angle data into a training and validation set. I train my model with the training data and found that above 5 epoch the squared error on the validation set start to increase instead of decrease. This indicated that I must overfitting my data. So I add 3 dropout layer between the e fully connected layer.    
 
 ####2. Final Model Architecture
 
