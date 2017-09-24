@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 Created on Sun Sep 17 15:52:26 2017
@@ -8,26 +9,15 @@ Created on Sun Sep 17 15:52:26 2017
 import csv
 import matplotlib.pyplot as plt
 import numpy as np
-import random
 
 static = {}
 lables = [round(-0.9+0.1*i,1) for i in range(20)]
-lines=[]
 for lable in lables:
     static[lable]=0
 with open('../data/driving_log.csv') as csvFile:
     reader = csv.reader(csvFile)
     next(reader)
     for line in reader:
-        if float(line[3])>0.0 and float(line[3])<0.1:
-            if round(random.random()*0.58):
-                lines.append(line)
-        elif float(line[3])>-0.2 and float(line[3])<0.2:
-            if round(random.random()):
-                lines.append(line)
-        else:
-            lines.append(line)
-    for line in lines:
         for lable in lables:
             if float(line[3])<lable:
                 static[lable]+=1
