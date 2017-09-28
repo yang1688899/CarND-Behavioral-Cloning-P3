@@ -18,7 +18,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
+[image1]: ./image/image1.png
 [image2]: ./examples/placeholder.png "Grayscaling"
 [image3]: ./examples/placeholder_small.png "Recovery Image"
 [image4]: ./examples/placeholder_small.png "Recovery Image"
@@ -113,35 +113,63 @@ For details about how I created the training data, see the next section.
 
 ####1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
-
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
-
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
-
-To combat the overfitting, I modified the model so that ...
-
-Then I ... 
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
-
-First use a convolution neural network model similar to the LeNet architecture, just wanted to see how this architecture going to perform on such problem. After I split my image and steering angle data into a training and validation set. I train my model with the training data and found that above 5 epoch the squared error on the validation set start to increase instead of decrease. This indicated that I must overfitting my data. So I add 3 dropout layer between the e fully connected layer.    
+First use a convolution neural network model similar to the LeNet architecture, just wanted to see how this architecture going to perform on such problem. After I split my image and steering angle data into a training and validation set. I train my model with the training data and found that above 5 epoch the squared error on the validation set start to increase instead of decrease. This indicated that I must overfitting my data. So I add 3 dropout layer between the fully connected layer.After I preprocess the data, the model have been trained whitout overfitting. But this model still not capabale to drive the car through the entire track whitout break out off the road. So I used the more powerful network-the navidia network, by adding a maxpoolinng layer for each convolution layer and a dropout layer after first 3 convolution layer and use relu as activation function for each layer.After i train my model used the preprocessed data, I got a model that can drive the vehicle is able to drive autonomously around the track without leaving the road!
 
 ####2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model consisted 5 Convolution layers with depth of 24,36,48,64,64 and a 2x2 Max pooling layer after each convolution layers, and 3 fully connected layer.In order to avoids overfitting, also add a dropout layer between this layer execpt the first 3 convolution layers:
+```
+model = Sequential()
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+model.add(Conv2D(filters=24,kernel_size=(5,5),input_shape=[399, 600, 3]))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=2,strides=2))
 
-![alt text][image1]
+model.add(Conv2D(filters=36,kernel_size=(5,5)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=2,strides=2))
+
+model.add(Conv2D(filters=48,kernel_size=(5,5)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=2,strides=2))
+
+model.add(Dropout(0.5))
+
+model.add(Conv2D(filters=64,kernel_size=(3,3)))
+model.add(Activation('relu'))
+
+model.add(Dropout(0.5))
+
+model.add(Conv2D(filters=64,kernel_size=(3,3)))
+model.add(Activation('relu'))
+
+model.add(Flatten())
+model.add(Dense(200))
+model.add(Activation('relu'))
+model.add(Dropout(0.5))
+
+model.add(Dense(100))
+model.add(Activation('relu'))
+model.add(Dropout(0.5))
+
+
+model.add(Dense(80))
+model.add(Activation('softmax'))
+
+```
+
 
 ####3. Creation of the Training Set & Training Process
+First I used the provided data to train the network, which provided a terrible result. So i decide look deeper into the data. And find that the data is very dias. So I have to collect more data on my own.
+
+In order to capture good driving behavior, I first recorded two laps on track one using center lane driving, then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to turn. And add all my collected data with the data Udacity provided, I got a data set like this:
+![alt text][image1]
+
+
 
 To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
 
-![alt text][image2]
+
 
 I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
 
