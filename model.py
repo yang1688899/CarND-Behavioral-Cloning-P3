@@ -53,6 +53,7 @@ def generator(samples, batch_size=32):
             y_train = np.array(measurements)
             yield X_train,y_train
  
+#get the path for image
 def get_current_path(path):
     path = path.replace('/','\\')
     fileName = path.split('\\')[-1]
@@ -78,6 +79,7 @@ batch_size = 32
 train_generator = generator(train_samples,batch_size=batch_size)
 validate_generator = generator(validate_samples,batch_size=batch_size)       
 
+#create the network
 model = Sequential()
 
 model.add(Cropping2D(cropping=((70,25), (0,0)), input_shape=[160, 320, 3]))
