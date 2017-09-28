@@ -19,8 +19,8 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./image/bias_iamge.png
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
+[image2]: ./image/image2.png "Grayscaling"
+[image3]: ./image/image3.png "Recovery Image"
 [image4]: ./examples/placeholder_small.png "Recovery Image"
 [image5]: ./examples/placeholder_small.png "Recovery Image"
 [image6]: ./examples/placeholder_small.png "Normal Image"
@@ -164,31 +164,27 @@ First I used the provided data to train the network, which provided a terrible r
 
 In order to capture good driving behavior, I first recorded two laps on track one using center lane driving, then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to turn. And add all my collected data with the data Udacity provided, I got a data set like this:
 ![alt text][image1]
-
-
-
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
-
-
-
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
-
+Seems the data set have too little hard turn data.
+So I do more recovering driving to capture more hard turn data. After a prolong data collecting process, I got a data set look like this:
+![alt text][image2]
+Seems that the way I drive the car the collect more data is not quit right, I do get more hard turning data, but even more go straigt data......
+So i decide to add code a filter to randomly filter out a lot the data that steering angle is too small:
+```
+for line in reader:
+        if float(line[3])>0.0 and float(line[3])<0.1:
+            if round(random.random()*0.58):
+                lines.append(line)
+        elif float(line[3])>-0.2 and float(line[3])<0.2:
+            if round(random.random()):
+                lines.append(line)
+        else:
+            lines.append(line)
+```
+Finilly I got a data set look like this:
 ![alt text][image3]
-![alt text][image4]
-![alt text][image5]
 
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+Still a bias data, but mush better, good enough to train a model that could pass track 1!
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+
