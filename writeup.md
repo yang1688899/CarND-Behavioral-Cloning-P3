@@ -21,9 +21,9 @@ The goals / steps of this project are the following:
 [image1]: ./image/bias_iamge.png
 [image2]: ./image/image2.png "Grayscaling"
 [image3]: ./image/image3.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
+[image4]: ./image/image4.png "Recovery Image"
+[image5]: ./image/image5.png "Recovery Image"
+[image6]: ./image/image6.png "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
 
 ## Rubric Points
@@ -161,6 +161,18 @@ model.add(Activation('softmax'))
 
 ####3. Creation of the Training Set & Training Process
 First I used the provided data to train the network, which provided a terrible result. So i decide look deeper into the data. And find that the data is very dias. So I have to collect more data on my own.
+
+At each frame, 3 images is taken by 3 cameras in difference places:
+![alt text][image4]
+the center image
+
+![alt text][image5]
+the left image
+
+![alt text][image6]
+the right image
+
+I used all three images taken for each frame in my training, and add(subtract)0.2 steering angle for the left and right image.
 
 In order to capture good driving behavior, I first recorded two laps on track one using center lane driving, then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to turn. And add all my collected data with the data Udacity provided, I got a data set like this:
 ![alt text][image1]
