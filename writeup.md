@@ -21,9 +21,9 @@ The goals / steps of this project are the following:
 [image1]: ./image/bias_iamge.png
 [image2]: ./image/image2.png "Grayscaling"
 [image3]: ./image/image3.png "Recovery Image"
-[image4]: ./image/image4.png "Recovery Image"
-[image5]: ./image/image5.png "Recovery Image"
-[image6]: ./image/image6.png "Normal Image"
+[image4]: ./image/image4.jpg "Recovery Image"
+[image5]: ./image/image5.jpg "Recovery Image"
+[image6]: ./image/image6.jpg "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
 
 ## Rubric Points
@@ -163,6 +163,7 @@ model.add(Activation('softmax'))
 First I used the provided data to train the network, which provided a terrible result. So i decide look deeper into the data. And find that the data is very dias. So I have to collect more data on my own.
 
 At each frame, 3 images is taken by 3 cameras in difference places:
+
 ![alt text][image4]
 the center image
 
