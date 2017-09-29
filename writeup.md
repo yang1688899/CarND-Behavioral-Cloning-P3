@@ -163,6 +163,7 @@ model.add(Activation('softmax'))
 First I used the provided data to train the network, which provided a terrible result. So i decide look deeper into the data. And find that the data is very dias. So I have to collect more data on my own.
 
 At each frame, 3 images is taken by 3 cameras in difference places:
+
 ![alt text][image4]
 the center image
 
