@@ -21,9 +21,9 @@ The goals / steps of this project are the following:
 [image1]: ./image/bias_iamge.png
 [image2]: ./image/image2.png "Grayscaling"
 [image3]: ./image/image3.png "Recovery Image"
-[image4]: ./image/image4.png "Recovery Image"
-[image5]: ./image/image5.png "Recovery Image"
-[image6]: ./image/image6.png "Normal Image"
+[image4]: ./image/image4.jpg "Recovery Image"
+[image5]: ./image/image5.jpg "Recovery Image"
+[image6]: ./image/image6.jpg "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
 
 ## Rubric Points
