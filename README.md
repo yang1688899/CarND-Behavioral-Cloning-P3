@@ -5,7 +5,7 @@
 
 * 使用模拟器收集训练
 * 分析预处理训练数据
-* 使用Keras搭建CNN，训练校验网络
+* 使用Keras搭建CNN，训练校验模型
 * 在模拟器上测试网络表现
 
 [//]: # (Image References)
@@ -22,6 +22,7 @@
 #### 使用模拟器收集训练数据
 
 使用udacity提供的模拟器收集训练数据，训练数据特征(features)为车前部摄像头捕捉到的原始像素图，标签(lable)为汽车的方向操控命令。模拟器汽车使用左中右三个摄像头捕捉每一帧图片，以下为同一帧下不同摄像头捕捉的图片:
+
 中：
 
 ![alt text][image4]
@@ -34,11 +35,23 @@
 
 ![alt text][image6]
 
-####2. Submission includes functional code
-Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
-```sh
-python drive.py model.h5
-```
+#### 使用Keras搭建CNN，训练校验模型
+最终的模型结构如下:
+
+| Layer         		|     Description	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| Input         		| 32x32x1 image   							    | 
+| Convolution 5x5     	| 1x1 stride, valid padding, outputs 28x28x108 	|
+| Tanh					|												|
+| Max pooling	      	| 2x2 stride,  outputs 14x14x108 				    |
+| Convolution 5x5	    | 1x1 stride, valid padding, outputs 10x10x200   |
+| Tanh          		|       									    |
+|Max pooling     		| 2x2 stride,  outputs 5x5x200					|
+|Flatten				| outputs 47052									|
+|Fully Connected    	| outputs 50					                |
+| Tanh          		|       									    |
+|Fully Connected    	| outputs 43					                |
+
 
 ####3. Submission code is usable and readable
 
