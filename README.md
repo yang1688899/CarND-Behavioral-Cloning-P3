@@ -110,7 +110,12 @@ model.add(Dense(80))
 model.add(Activation('softmax'))
 
 ```
-
+训练使用的优化器(optimizer)为adam,损失函数(loss function)为mse,一共进行5 epoch训练
+```
+model.compile(optimizer='adam', loss='mse')
+model.fit_generator(train_generator,steps_per_epoch=len(train_samples)/batch_size,validation_data=\
+          validate_generator,nb_val_samples=len(validate_samples)/batch_size,nb_epoch=5)
+```
 ####3. Submission code is usable and readable
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
