@@ -40,18 +40,76 @@
 
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Input         		| 32x32x1 image   							    | 
-| Convolution 5x5     	| 1x1 stride, valid padding, outputs 28x28x108 	|
-| Tanh					|												|
-| Max pooling	      	| 2x2 stride,  outputs 14x14x108 				    |
-| Convolution 5x5	    | 1x1 stride, valid padding, outputs 10x10x200   |
-| Tanh          		|       									    |
-|Max pooling     		| 2x2 stride,  outputs 5x5x200					|
-|Flatten				| outputs 47052									|
+| Input         		| 320x160x3 image   							    | 
+| Convolution 5x5     	| 1x1 stride, valid padding, 24 filters 	|
+| Relu					|												|
+| Max pooling 2x2	      	| 2x2 stride				    |
+| Convolution 5x5	    | 1x1 stride, valid padding, 36 filters   |
+| Relu          		|       									    |
+|Max pooling     		| 2x2 stride					|
+| Convolution 5x5	    | 1x1 stride, valid padding, 48 filters   |
+| Relu          		|       									    |
+|Max pooling     		| 2x2 stride					|
+|Dropout     		| 0.5					|
+| Convolution 5x5	    | 1x1 stride, valid padding, 64 filters   |
+| Relu          		|       									    |
+|Dropout     		| 0.5					|
+| Convolution 5x5	    | 1x1 stride, valid padding, 64 filters   |
+| Relu          		|       									    |
+|Dropout     		| 0.5					|
+|Flatten				| 									|
+|Fully Connected    	| outputs 100					                |
+| Relu          		|       									    |
+|Dropout     		| 0.5					|
 |Fully Connected    	| outputs 50					                |
-| Tanh          		|       									    |
-|Fully Connected    	| outputs 43					                |
+| Relu          		|       									    |
+|Dropout     		| 0.5					|
+|Fully Connected    	| outputs 10					                |
+| Relu          		|       									    |
+|Dropout     		| 0.5					|
+|Fully Connected    	| outputs 1					                |
 
+以下为实现代码:
+
+```
+model = Sequential()
+
+model.add(Conv2D(filters=24,kernel_size=(5,5),input_shape=[399, 600, 3]))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=2,strides=2))
+
+model.add(Conv2D(filters=36,kernel_size=(5,5)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=2,strides=2))
+
+model.add(Conv2D(filters=48,kernel_size=(5,5)))
+model.add(Activation('relu'))
+model.add(MaxPooling2D(pool_size=2,strides=2))
+
+model.add(Dropout(0.5))
+
+model.add(Conv2D(filters=64,kernel_size=(3,3)))
+model.add(Activation('relu'))
+
+model.add(Dropout(0.5))
+
+model.add(Conv2D(filters=64,kernel_size=(3,3)))
+model.add(Activation('relu'))
+
+model.add(Flatten())
+model.add(Dense(200))
+model.add(Activation('relu'))
+model.add(Dropout(0.5))
+
+model.add(Dense(100))
+model.add(Activation('relu'))
+model.add(Dropout(0.5))
+
+
+model.add(Dense(80))
+model.add(Activation('softmax'))
+
+```
 
 ####3. Submission code is usable and readable
 
