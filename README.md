@@ -1,20 +1,12 @@
-# **车辆行为复制** 
+## **车辆行为复制（Behavioral Cloning）** 
+[![Udacity - Self-Driving Car NanoDegree](https://s3.amazonaws.com/udacity-sdc/github/shield-carnd.svg)](http://www.udacity.com/drive)
 
-##Writeup Template
+**实现步骤**
 
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
-**Behavioral Cloning Project**
-
-The goals / steps of this project are the following:
-* Use the simulator to collect data of good driving behavior
-* Build, a convolution neural network in Keras that predicts steering angles from images
-* Train and validate the model with a training and validation set
-* Test that the model successfully drives around track one without leaving the road
-* Summarize the results with a written report
-
+* 使用模拟器收集训练
+* 分析预处理训练数据
+* 使用Keras搭建CNN，训练校验网络
+* 在模拟器上测试网络表现
 
 [//]: # (Image References)
 
