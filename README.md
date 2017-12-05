@@ -18,19 +18,21 @@
 [image6]: ./image/image6.jpg "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
 
-## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
----
-###Files Submitted & Code Quality
+#### 使用模拟器收集训练数据
 
-####1. Submission includes all required files and can be used to run the simulator in autonomous mode
+使用udacity提供的模拟器收集训练数据，训练数据特征(features)为车前部摄像头捕捉到的原始像素图，标签(lable)为汽车的方向操控命令。模拟器汽车使用左中右三个摄像头捕捉每一帧图片，以下为同一帧下不同摄像头捕捉的图片:
+中：
 
-My project includes the following files:
-* model.py containing the script to create and train the model
-* drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network 
-* writeup_report.md summarizing the results
+![alt text][image4]
+
+左：
+
+![alt text][image5]
+
+右：
+
+![alt text][image6]
 
 ####2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
@@ -156,14 +158,7 @@ First I used the provided data to train the network, which provided a terrible r
 
 At each frame, 3 images is taken by 3 cameras in difference places:
 
-![alt text][image4]
-the center image
 
-![alt text][image5]
-the left image
-
-![alt text][image6]
-the right image
 
 I used all three images taken for each frame in my training, and add(subtract)0.2 steering angle for the left and right image.
 
